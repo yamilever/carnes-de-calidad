@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnes de Calidad — Frescas, Premium, Confiables</title>
+<meta name="description" content="Catálogo de carnes, aves, pescado y embutidos frescos. Haga su pedido directo por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181310;
+    --charcoal:#241d18;
+    --charcoal-soft:#2d241d;
+    --paper:#f3e9d8;
+    --paper-dim:#e9dcc4;
+    --red:#a32020;
+    --red-deep:#7c1919;
+    --gold:#c89b3c;
+    --cream-text:#f6efe1;
+    --muted:#a89a86;
+    --line:rgba(246,239,225,0.12);
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--cream-text);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:700; letter-spacing:-0.01em;}
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit; cursor:pointer;}
+  .container{max-width:1180px; margin:0 auto; padding:0 24px;}
+  :focus-visible{outline:2.5px solid var(--gold); outline-offset:2px;}
+
+  /* ---------------- Header ---------------- */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:rgba(24,19,16,0.94);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; gap:16px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand img{height:42px; width:auto;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.15;}
+  .brand-text strong{font-family:'Fraunces', serif; font-size:1.15rem; font-weight:700;}
+  .brand-text span{font-size:0.68rem; letter-spacing:0.08em; color:var(--muted);}
+  .top-actions{display:flex; align-items:center; gap:14px;}
+  .wa-pill{
+    display:flex; align-items:center; gap:8px;
+    background:var(--charcoal-soft); border:1px solid var(--line);
+    padding:8px 14px; border-radius:999px; font-size:0.86rem; font-weight:600;
+    text-decoration:none; color:var(--cream-text);
+  }
+  .wa-pill svg{width:16px; height:16px; color:#4ade80; flex-shrink:0;}
+  /* ---------------- Hero ---------------- */
+  .hero{
+    position:relative; padding:64px 0 56px; overflow:hidden;
+    background:
+      radial-gradient(ellipse 700px 420px at 82% -10%, rgba(163,32,32,0.28), transparent 60%),
+      var(--ink);
+  }
+  .hero .container{display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;}
+  .stamp{
+    width:132px; height:132px; border-radius:50%; border:3px solid var(--gold);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-9deg); flex-shrink:0; position:relative;
+  }
+  .stamp::before{
+    content:""; position:absolute; inset:8px; border:1px solid var(--gold); border-radius:50%; opacity:0.6;
+  }
+  .stamp span{
+    font-family:'Fraunces', serif; font-weight:700; font-size:0.82rem; color:var(--gold);
+    line-height:1.25; padding:0 12px;
+  }
+  .hero-head{display:flex; align-items:flex-start; gap:22px; margin-bottom:22px;}
+  .hero h1{font-size:2.7rem; line-height:1.06; max-width:14ch;}
+  .hero h1 em{font-style:normal; color:var(--red); display:block;}
+  .hero p.lead{font-size:1.05rem; color:var(--paper-dim); max-width:44ch; margin:18px 0 28px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:8px;
+    font-weight:700; font-size:0.95rem; text-decoration:none; border:1.5px solid transparent;
+    transition:transform .1s, background .15s;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--red); color:#fff;}
+  .btn-primary:hover{background:var(--red-deep);}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--cream-text);}
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+  .hero-photo{
+    border-radius:14px; overflow:hidden; border:1px solid var(--line);
+    aspect-ratio:4/5;
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover;}
+  @media (max-width:860px){
+    .hero .container{grid-template-columns:1fr;}
+    .hero-photo{aspect-ratio:16/9; order:-1;}
+    .hero h1{font-size:2.1rem;}
+    .hero-head{flex-direction:column;}
+  }
+
+  /* ---------------- Filtros ---------------- */
+  .catalog-head{
+    position:sticky; top:73px; z-index:50;
+    background:var(--ink); border-bottom:1px solid var(--line);
+    padding:18px 0;
+  }
+  .filters-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .search-box{
+    flex:1; min-width:180px; display:flex; align-items:center; gap:8px;
+    background:var(--charcoal-soft); border:1px solid var(--line); border-radius:999px;
+    padding:9px 16px;
+  }
+  .search-box svg{width:16px; height:16px; color:var(--muted); flex-shrink:0;}
+  .search-box input{
+    background:none; border:none; outline:none; color:var(--cream-text); font-size:0.92rem; width:100%;
+  }
+  .search-box input::placeholder{color:var(--muted);}
+  .pills{display:flex; gap:8px; flex-wrap:wrap;}
+  .pill{
+    background:var(--charcoal-soft); border:1px solid var(--line); color:var(--paper-dim);
+    padding:8px 16px; border-radius:999px; font-size:0.85rem; font-weight:600; white-space:nowrap;
+  }
+  .pill.active{background:var(--red); border-color:var(--red); color:#fff;}
+  .pill:hover:not(.active){border-color:var(--gold); color:var(--gold);}
+
+  /* ---------------- Catálogo ---------------- */
+  .catalog{padding:36px 0 80px;}
+  .cat-group{margin-bottom:44px;}
+  .cat-group-title{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:18px;
+    padding-bottom:10px; border-bottom:1px solid var(--line);
+  }
+  .cat-group-title h2{font-size:1.4rem; color:var(--paper);}
+  .cat-group-title span{font-size:0.85rem; color:var(--muted);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:20px;}
+
+  .card{
+    background:var(--paper); color:var(--ink); border-radius:var(--radius);
+    overflow:hidden; display:flex; flex-direction:column; border:1px solid rgba(0,0,0,0.06);
+  }
+  .card-photo{aspect-ratio:4/3; overflow:hidden; position:relative;}
+  .card-photo img{width:100%; height:100%; object-fit:cover;}
+  .card-note{
+    position:absolute; top:10px; left:10px; background:var(--gold); color:var(--ink);
+    font-size:0.68rem; font-weight:700; padding:4px 9px; border-radius:5px; max-width:80%;
+  }
+  .card-body{padding:16px 16px 18px; display:flex; flex-direction:column; flex:1;}
+  .card-body h3{font-size:1.05rem; margin-bottom:6px; line-height:1.2;}
+  .price-row{display:flex; align-items:baseline; gap:6px; margin-bottom:14px;}
+  .price-row .amount{font-family:'Fraunces', serif; font-weight:700; font-size:1.35rem; color:var(--red);}
+  .price-row .unit{font-size:0.8rem; color:#6b5f4f;}
+  .card-actions{margin-top:auto; display:flex; align-items:center; gap:8px;}
+  .add-btn{
+    flex:1; background:#25D366; color:#0b3d1f; border:none; border-radius:8px;
+    height:34px; font-weight:700; font-size:0.8rem; display:flex; align-items:center; justify-content:center; gap:6px;
+    text-decoration:none;
+  }
+  .add-btn:hover{background:#1fb959;}
+  .add-btn svg{width:15px; height:15px; flex-shrink:0;}
+
+  /* ---------------- Footer ---------------- */
+  footer{background:var(--charcoal); border-top:1px solid var(--line); padding:44px 0 24px; margin-top:20px;}
+  .footer-grid{display:flex; flex-wrap:wrap; gap:32px; justify-content:space-between; margin-bottom:28px;}
+  footer h4{font-size:1rem; margin-bottom:12px; color:var(--paper);}
+  footer p, footer a{font-size:0.88rem; color:var(--muted); text-decoration:none;}
+  footer a:hover{color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid var(--line); padding-top:16px; font-size:0.78rem; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+
+  @media (max-width:600px){
+    .topbar{padding:10px 14px;}
+    .wa-pill span{display:none;}
+    .wa-pill{padding:8px 10px;}
+    .container{padding:0 16px;}
+    .brand img{height:32px;}
+    .brand-text strong{font-size:0.95rem; white-space:nowrap;}
+    .brand-text span{display:none;}
+    .cart-btn{padding:9px 12px; font-size:0.82rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Carnes de Calidad">
+      <div class="brand-text">
+        <strong>Carnes de Calidad</strong>
+        <span>Frescas · Premium · Confiables</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="wa-pill" href="https://wa.me/50683215567" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4C10.3 10 9.8 8.7 9.6 8.2c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.9 2.3 1 2.5c.1.2 1.7 2.7 4.2 3.7.6.2 1 .4 1.4.5.6.2 1.1.1 1.5-.1.5-.2 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.5-.3z"/></svg>
+        <span>8321 5567</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div>
+      <div class="hero-head">
+        <div class="stamp"><span>Calidad garantizada</span></div>
+      </div>
+      <h1>Carne fresca,<em>directo a su mesa.</em></h1>
+      <p class="lead">Res, cerdo, pollo, pescado y embutidos seleccionados a diario. Arme su pedido aquí abajo y lo confirmamos por WhatsApp en minutos.</p>
+      <div class="hero-ctas">
+        <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
+        <a href="https://wa.me/50683215567" target="_blank" rel="noopener" class="btn btn-ghost">Escribir por WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <img src="images/churrasco.jpg" alt="Churrasco premium">
+    </div>
+  </div>
+</section>
+
+<div class="catalog-head" id="catalogo">
+  <div class="container">
+    <div class="filters-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" placeholder="Buscar un producto...">
+      </div>
+      <div class="pills" id="pillsRow"></div>
+    </div>
+  </div>
+</div>
+
+<main class="catalog">
+  <div class="container" id="catalogContainer"></div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Carnes de Calidad</h4>
+        <p style="max-width:30ch;">Carnicería de barrio con selección diaria de cortes frescos y precios claros por kilo.</p>
+      </div>
+      <div>
+        <h4>Pedidos</h4>
+        <p><a href="https://wa.me/50683215567" target="_blank" rel="noopener">WhatsApp: 8321 5567</a></p>
+        <p>Arme su pedido en el catálogo y lo enviamos listo para confirmar.</p>
+      </div>
+      <div>
+        <h4>Horario</h4>
+        <p>Lunes a sábado: 7:00 a.m. – 6:00 p.m.</p>
+        <p>Domingo: 7:00 a.m. – 12:00 p.m.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Carnes de Calidad.</span>
+      <span>Precios por kilogramo, sujetos a cambio sin previo aviso.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---------------- Datos del catálogo (extraídos del volante) ----------------
+  const PRODUCTS = [
+    { id:"alas", name:"Alas", cat:"pollo", price:2790, img:"alas.jpg" },
+    { id:"churrasco", name:"Churrasco", cat:"res", price:8490, img:"churrasco.jpg" },
+    { id:"lomito-entrana", name:"Lomito / Entraña", cat:"res", price:7690, img:"lomito-entrana.jpg" },
+    { id:"tilapia", name:"Tilapia", cat:"pescado", price:2490, note:"Caja: ₡10.650 / 4.5 kg", img:"tilapia.jpg" },
+    { id:"pollo-entero", name:"Pollo Entero", cat:"pollo", price:2900, img:"pollo-entero.jpg" },
+    { id:"pechuga-entera", name:"Pechuga Entera", cat:"pollo", price:3250, img:"pechuga-entera.jpg" },
+    { id:"chuleta-ahumada", name:"Chuleta Ahumada", cat:"cerdo", price:4990, img:"chuleta-ahumada.jpg" },
+    { id:"pechuga-deshuesada", name:"Pechuga Deshuesada", cat:"pollo", price:3900, img:"pechuga-deshuesada.jpg" },
+    { id:"muslo-deshuesado", name:"Muslo Deshuesado", cat:"pollo", price:2950, img:"muslo-deshuesado.jpg" },
+    { id:"muslo-entero", name:"Muslo Entero", cat:"pollo", price:1470, img:"muslo-entero.jpg" },
+    { id:"chuleta-rinonada", name:"Chuleta Riñonada", cat:"cerdo", price:3690, img:"chuleta-rinonada.jpg" },
+    { id:"papa-congelada", name:"Papa Congelada", cat:"otros", price:1495, note:"Bolsa 2.5 kg: ₡3.475", img:"papa-congelada.jpg" },
+    { id:"carne-molida-premium", name:"Carne Molida Premium", cat:"res", price:6160, img:"carne-molida-premium.jpg" },
+    { id:"carne-molida-especial", name:"Carne Molida Especial", cat:"res", price:3990, img:"carne-molida-especial.jpg" },
+    { id:"punta-de-solomo", name:"Punta de Solomo", cat:"res", price:8990, note:"Peso promedio 1.5–2 kg", img:"punta-de-solomo.jpg" },
+    { id:"costilla-cerdo-san-luis", name:"Costilla de Cerdo San Luis", cat:"cerdo", price:5395, note:"Peso promedio 1.5–2 kg", img:"costilla-cerdo-san-luis.jpg" },
+    { id:"costilla-de-res", name:"Costilla de Res", cat:"res", price:4475, img:"costilla-de-res.jpg" },
+    { id:"posta-de-cerdo", name:"Posta de Cerdo", cat:"cerdo", price:3490, img:"posta-de-cerdo.jpg" },
+    { id:"tocineta", name:"Tocineta", cat:"cerdo", price:9350, note:"1/4 kg: ₡2.490", img:"tocineta.jpg" },
+    { id:"salmon", name:"Salmón", cat:"pescado", price:10390, img:"salmon.jpg" },
+    { id:"carne-para-mechar", name:"Carne para Mechar", cat:"res", price:5590, img:"carne-para-mechar.jpg" },
+    { id:"cecina", name:"Cecina", cat:"res", price:5490, img:"cecina.jpg" },
+    { id:"bistec-res-especial", name:"Bistec de Res Especial", cat:"res", price:6990, img:"bistec-res-especial.jpg" },
+  ];
+
+  const CATEGORIES = [
+    { id:"todos", label:"Todos" },
+    { id:"res", label:"Res" },
+    { id:"cerdo", label:"Cerdo" },
+    { id:"pollo", label:"Pollo" },
+    { id:"pescado", label:"Pescado y mariscos" },
+    { id:"otros", label:"Otros" },
+  ];
+
+  const WHATSAPP_NUMBER = "50683215567";
+
+  // ---------------- Estado ----------------
+  let activeCategory = "todos";
+  let searchTerm = "";
+
+  const fmt = (n) => "₡" + Math.round(n).toLocaleString("es-CR");
+
+  function waLinkFor(product, qty) {
+    const lineTotal = qty * product.price;
+    const text = [
+      `Hola, quisiera pedir:`,
+      `${product.name} — ${qty} kg (${fmt(lineTotal)})`,
+      ``,
+      `¿Me confirman disponibilidad? Gracias.`,
+    ].join("\n");
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  }
+
+  // ---------------- Render filtros ----------------
+  const pillsRow = document.getElementById("pillsRow");
+  CATEGORIES.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "pill" + (c.id === "todos" ? " active" : "");
+    b.textContent = c.label;
+    b.dataset.cat = c.id;
+    b.addEventListener("click", () => {
+      activeCategory = c.id;
+      document.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p.dataset.cat === c.id));
+      renderCatalog();
+    });
+    pillsRow.appendChild(b);
+  });
+
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    searchTerm = e.target.value.trim().toLowerCase();
+    renderCatalog();
+  });
+
+  // ---------------- Render catálogo ----------------
+  const catalogContainer = document.getElementById("catalogContainer");
+
+  function renderCatalog() {
+    catalogContainer.innerHTML = "";
+    const groups = activeCategory === "todos"
+      ? CATEGORIES.filter(c => c.id !== "todos")
+      : CATEGORIES.filter(c => c.id === activeCategory);
+
+    let totalShown = 0;
+
+    groups.forEach(group => {
+      const items = PRODUCTS.filter(p => p.cat === group.id && p.name.toLowerCase().includes(searchTerm));
+      if (items.length === 0) return;
+      totalShown += items.length;
+
+      const section = document.createElement("div");
+      section.className = "cat-group";
+      section.innerHTML = `
+        <div class="cat-group-title">
+          <h2>${group.label}</h2>
+          <span>${items.length} producto${items.length === 1 ? "" : "s"}</span>
+        </div>
+        <div class="grid"></div>
+      `;
+      const grid = section.querySelector(".grid");
+      items.forEach(p => grid.appendChild(renderCard(p)));
+      catalogContainer.appendChild(section);
+    });
+
+    if (totalShown === 0) {
+      catalogContainer.innerHTML = `<p style="text-align:center; color:var(--muted); padding:60px 0;">No se encontraron productos con ese nombre.</p>`;
+    }
+  }
+
+  function renderCard(p) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-photo">
+        <img src="images/${p.img}" alt="${p.name}" loading="lazy">
+        ${p.note ? `<span class="card-note">${p.note}</span>` : ""}
+      </div>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <div class="price-row">
+          <span class="amount">${fmt(p.price)}</span>
+          <span class="unit">/ kg</span>
+        </div>
+        <div class="card-actions">
+          <a class="add-btn" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, quisiera consultar por ${p.name}. ¿Me pueden ayudar?`)}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 20zm4.4-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4C10.3 10 9.8 8.7 9.6 8.2c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.9 2.3 1 2.5c.1.2 1.7 2.7 4.2 3.7.6.2 1 .4 1.4.5.6.2 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.5-.3z"/></svg>
+            Consultar
+          </a>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  // ---------------- Inicio ----------------
+  renderCatalog();
+</script>
+</body>
+</html>
