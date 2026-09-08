@@ -98,12 +98,11 @@
     border-radius:14px; overflow:hidden; border:1px solid var(--line);
     aspect-ratio:4/5;
   }
- .hero-photo img{width:100%; height:100%; object-fit:cover; object-position: center;}
-  @media (max-width:860px){
-    .hero .container{grid-template-columns:1fr;}
-    .hero-photo{aspect-ratio:16/9; order:-1;}
-    .hero h1{font-size:2.1rem;}
-    .hero-head{flex-direction:column;}
+ .hero-photo.hero-photo{
+    border-radius:14px; overflow:hidden; border:1px solid var(--line);
+    aspect-ratio: 1 / 1;
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover; object-position: center;}
   }
 
   /* ---------------- Filtros ---------------- */
@@ -177,15 +176,12 @@
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
   }
 
-  @media (max-width:600px){
-    .topbar{padding:10px 14px;}
-    .wa-pill span{display:none;}
-    .wa-pill{padding:8px 10px;}
-    .container{padding:0 16px;}
-    .brand img{height:32px;}
-    .brand-text strong{font-size:0.95rem; white-space:nowrap;}
-    .brand-text span{display:none;}
-    .cart-btn{padding:9px 12px; font-size:0.82rem;}
+  @media @media (max-width:860px){
+    .hero .container{grid-template-columns:1fr;}
+    .hero-photo{aspect-ratio: 4 / 3; order:-1;} 
+    .hero h1{font-size:2.1rem;}
+    .hero-head{flex-direction:column;}
+  }
   }
 </style>
 </head>
@@ -223,7 +219,7 @@
       </div>
     </div>
     <div class="hero-photo">
-      <img src="images/costilla-de-res.jpg" alt="Costilla de Res Premium">
+      <img src="images/carne-hero.jpg" alt="Carne Premium">
     </div>
   </div>
 </section>
