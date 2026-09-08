@@ -176,11 +176,37 @@
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
   }
 
-  @media @media (max-width:860px){
-    .hero .container{grid-template-columns:1fr;}
-    .hero-photo{aspect-ratio: 4 / 3; order:-1;} 
-    .hero h1{font-size:2.1rem;}
-    .hero-head{flex-direction:column;}
+ /* --- REGLAS PARA MÓVILES (Celulares y Tablets) --- */
+  @media (max-width: 860px) {
+    /* 1. Arreglar el encabezado y el logo */
+    .topbar { padding: 12px 16px; }
+    .brand { gap: 8px; }
+    .brand img { width: 90px; height: auto !important; } /* Evita que el logo se desborde */
+    .brand-text strong { font-size: 1rem; white-space: normal; line-height: 1.1; }
+    .brand-text span { display: none; }
+    .wa-pill { padding: 8px 10px; }
+    .wa-pill span { display: none; } /* Oculta el número para ganar espacio */
+
+    /* 2. Arreglar la sección principal (Foto y Texto) */
+    .hero .container {
+      display: flex;
+      flex-direction: column-reverse; /* Pone la foto arriba y el texto abajo */
+      gap: 20px;
+    }
+    .hero-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3; /* Proporción ideal para la foto que generamos */
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      word-wrap: break-word;
+      line-height: 1.1;
+    }
+    .hero-head {
+      flex-direction: column;
+    }
+  }
   }
   }
 </style>
