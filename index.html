@@ -165,6 +165,30 @@
   .add-btn:hover{background:#1fb959;}
   .add-btn svg{width:15px; height:15px; flex-shrink:0;}
 
+  /* ---------------- Lightbox ---------------- */
+  .card-photo{cursor:pointer;}
+  .lightbox{
+    position:fixed; inset:0; z-index:100; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(10,8,6,0.92); padding:24px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{position:relative; max-width:min(90vw,720px); max-height:90vh;}
+  .lightbox-inner img{
+    width:100%; height:100%; max-height:90vh; object-fit:contain;
+    border-radius:12px; border:1px solid var(--line);
+    background:var(--charcoal-soft);
+  }
+  .lightbox-caption{
+    text-align:center; color:var(--paper-dim); font-size:0.95rem; margin-top:12px;
+  }
+  .lightbox-close{
+    position:absolute; top:-18px; right:-18px; width:38px; height:38px; border-radius:50%;
+    background:var(--red); color:#fff; border:2px solid var(--ink); font-size:1.1rem;
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .lightbox-close:hover{background:var(--red-deep);}
+
   /* ---------------- Footer ---------------- */
   footer{background:var(--charcoal); border-top:1px solid var(--line); padding:44px 0 24px; margin-top:20px;}
   .footer-grid{display:flex; flex-wrap:wrap; gap:32px; justify-content:space-between; margin-bottom:28px;}
@@ -265,6 +289,14 @@
 <main class="catalog">
   <div class="container" id="catalogContainer"></div>
 </main>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -405,7 +437,7 @@
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <div class="card-photo">
+      <div class="card-photo" data-img="images/${p.img}" data-name="${p.name}">
         <img src="images/${p.img}" alt="${p.name}" loading="lazy">
         ${p.note ? `<span class="card-note">${p.note}</span>` : ""}
       </div>
@@ -425,6 +457,35 @@
     `;
     return card;
   }
+
+  // ---------------- Lightbox ----------------
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxCaption = document.getElementById("lightboxCaption");
+  const lightboxClose = document.getElementById("lightboxClose");
+
+  function openLightbox(src, name) {
+    lightboxImg.src = src;
+    lightboxImg.alt = name;
+    lightboxCaption.textContent = name;
+    lightbox.classList.add("open");
+  }
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightboxImg.src = "";
+  }
+
+  catalogContainer.addEventListener("click", (e) => {
+    const photo = e.target.closest(".card-photo");
+    if (photo) openLightbox(photo.dataset.img, photo.dataset.name);
+  });
+  lightboxClose.addEventListener("click", closeLightbox);
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+  });
 
   // ---------------- Inicio ----------------
   renderCatalog();
