@@ -187,32 +187,54 @@
     border-radius:16px; width:100%; max-width:860px; max-height:92vh; overflow:auto;
     display:grid; grid-template-columns:1fr 1fr;
   }
-  .product-modal-media{position:relative; aspect-ratio:1/1; background:var(--charcoal-soft);}
-  .product-modal-media img{width:100%; height:100%; object-fit:cover;}
-  .product-modal-info{padding:30px 30px 34px; display:flex; flex-direction:column;}
+  .product-modal-media{padding:24px 20px 20px; display:flex; flex-direction:column; background:var(--paper);}
+  .modal-image-frame{
+    aspect-ratio:1/1; background:var(--paper-dim); border-radius:10px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; padding:22px;
+  }
+  .modal-image-frame img{width:100%; height:100%; object-fit:contain; object-position:center;}
+  .modal-thumbs{display:flex; gap:10px; margin-top:12px;}
+  .modal-thumb{
+    width:64px; height:64px; border-radius:8px; overflow:hidden; border:2px solid transparent;
+    background:var(--paper-dim); padding:6px; flex-shrink:0;
+  }
+  .modal-thumb img{width:100%; height:100%; object-fit:contain;}
+  .modal-thumb.active{border-color:var(--red);}
+  .product-modal-info{padding:32px 32px 34px 12px; display:flex; flex-direction:column;}
   .modal-cat{
-    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.09em;
-    color:var(--red); font-weight:700; margin-bottom:8px;
+    font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em;
+    color:#8a7c68; font-weight:600; margin-bottom:10px;
   }
-  .product-modal-info h2{font-size:1.65rem; line-height:1.15; margin-bottom:14px;}
-  .modal-price-row{display:flex; align-items:baseline; gap:6px; margin-bottom:18px;}
-  .modal-price-row .amount{font-family:'Fraunces', serif; font-weight:700; font-size:1.9rem; color:var(--red);}
+  .product-modal-info h2{font-size:1.8rem; line-height:1.15; margin-bottom:14px;}
+  .modal-price-row{display:flex; align-items:baseline; gap:6px; margin-bottom:20px;}
+  .modal-price-row .amount{font-family:'Fraunces', serif; font-weight:700; font-size:1.6rem; color:var(--ink);}
   .modal-price-row .unit{font-size:0.85rem; color:#6b5f4f;}
-  .modal-desc{color:#4a4038; font-size:0.96rem; line-height:1.65; margin-bottom:16px;}
-  .modal-note{
-    display:inline-block; background:var(--gold); color:var(--ink); font-size:0.78rem;
-    font-weight:700; padding:5px 11px; border-radius:6px; margin-bottom:18px; align-self:flex-start;
+  .modal-desc{color:#5c5142; font-size:0.92rem; line-height:1.65; margin-bottom:20px;}
+  .modal-divider{height:1px; background:rgba(0,0,0,0.09); margin-bottom:18px;}
+  .modal-specs{display:flex; flex-direction:column; margin-bottom:26px;}
+  .modal-spec-row{
+    display:flex; justify-content:space-between; gap:12px; font-size:0.82rem;
+    padding:9px 0; border-bottom:1px solid rgba(0,0,0,0.07);
   }
-  .modal-add-btn{height:46px; font-size:0.92rem; margin-top:auto; max-width:100%;}
+  .modal-spec-row:last-child{border-bottom:none;}
+  .modal-spec-label{color:#8a7c68;}
+  .modal-spec-value{font-weight:700; color:var(--ink); text-align:right;}
+  .modal-add-btn{
+    display:flex; align-items:center; justify-content:center;
+    background:var(--red); color:#fff; text-decoration:none; border-radius:999px;
+    height:50px; font-weight:700; font-size:0.78rem; letter-spacing:0.07em; text-transform:uppercase;
+    margin-top:auto; border:none;
+  }
+  .modal-add-btn:hover{background:var(--red-deep);}
   .product-modal-close{
     position:absolute; top:14px; right:14px; z-index:2; width:36px; height:36px; border-radius:50%;
-    background:var(--red); color:#fff; border:2px solid rgba(0,0,0,0.15); font-size:1.05rem;
-    display:flex; align-items:center; justify-content:center; line-height:1;
+    background:#fff; color:var(--ink); border:1px solid rgba(0,0,0,0.1); font-size:1.05rem;
+    display:flex; align-items:center; justify-content:center; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,0.15);
   }
-  .product-modal-close:hover{background:var(--red-deep);}
+  .product-modal-close:hover{background:var(--paper-dim);}
   @media (max-width:680px){
     .product-modal-inner{grid-template-columns:1fr;}
-    .product-modal-media{aspect-ratio:4/3;}
+    .product-modal-info{padding:8px 24px 28px;}
   }
 
   /* ---------------- Footer ---------------- */
@@ -320,7 +342,10 @@
   <div class="product-modal-inner">
     <button class="product-modal-close" id="productModalClose" aria-label="Cerrar">✕</button>
     <div class="product-modal-media">
-      <img id="modalImg" src="" alt="">
+      <div class="modal-image-frame">
+        <img id="modalImg" src="" alt="">
+      </div>
+      <div class="modal-thumbs" id="modalThumbs"></div>
     </div>
     <div class="product-modal-info">
       <span class="modal-cat" id="modalCat"></span>
@@ -330,11 +355,9 @@
         <span class="unit">/ kg</span>
       </div>
       <p class="modal-desc" id="modalDesc"></p>
-      <span class="modal-note" id="modalNote" style="display:none;"></span>
-      <a class="add-btn modal-add-btn" id="modalAddBtn" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 20zm4.4-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.8-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4C10.3 10 9.8 8.7 9.6 8.2c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.9 2.3 1 2.5c.1.2 1.7 2.7 4.2 3.7.6.2 1 .4 1.4.5.6.2 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.5-.3z"/></svg>
-        Pedir por WhatsApp
-      </a>
+      <div class="modal-divider"></div>
+      <div class="modal-specs" id="modalSpecs"></div>
+      <a class="modal-add-btn" id="modalAddBtn" target="_blank" rel="noopener">Consultar disponibilidad por WhatsApp</a>
     </div>
   </div>
 </div>
@@ -503,28 +526,54 @@
   // ---------------- Ficha de producto ----------------
   const productModal = document.getElementById("productModal");
   const modalImg = document.getElementById("modalImg");
+  const modalThumbs = document.getElementById("modalThumbs");
   const modalCat = document.getElementById("modalCat");
   const modalName = document.getElementById("modalName");
   const modalPrice = document.getElementById("modalPrice");
   const modalDesc = document.getElementById("modalDesc");
-  const modalNote = document.getElementById("modalNote");
+  const modalSpecs = document.getElementById("modalSpecs");
   const modalAddBtn = document.getElementById("modalAddBtn");
   const productModalClose = document.getElementById("productModalClose");
 
   function openProductModal(p) {
     const catLabel = (CATEGORIES.find(c => c.id === p.cat) || {}).label || "";
-    modalImg.src = `images/${p.img}`;
+    const images = p.imgs && p.imgs.length ? p.imgs : [p.img];
+
+    modalImg.src = `images/${images[0]}`;
     modalImg.alt = p.name;
-    modalCat.textContent = catLabel;
+
+    modalThumbs.innerHTML = "";
+    if (images.length > 1) {
+      images.forEach((img, i) => {
+        const thumb = document.createElement("button");
+        thumb.className = "modal-thumb" + (i === 0 ? " active" : "");
+        thumb.innerHTML = `<img src="images/${img}" alt="${p.name} - vista ${i + 1}">`;
+        thumb.addEventListener("click", () => {
+          modalImg.src = `images/${img}`;
+          modalThumbs.querySelectorAll(".modal-thumb").forEach(t => t.classList.remove("active"));
+          thumb.classList.add("active");
+        });
+        modalThumbs.appendChild(thumb);
+      });
+    }
+
+    modalCat.textContent = "Carnes de Calidad · " + catLabel;
     modalName.textContent = p.name;
     modalPrice.textContent = fmt(p.price);
     modalDesc.textContent = p.desc || "";
-    if (p.note) {
-      modalNote.textContent = p.note;
-      modalNote.style.display = "inline-block";
-    } else {
-      modalNote.style.display = "none";
-    }
+
+    const specs = [
+      { label: "Categoría", value: catLabel },
+      { label: "Se vende por", value: "Kilogramo" },
+    ];
+    if (p.note) specs.push({ label: "Presentación", value: p.note });
+    modalSpecs.innerHTML = specs.map(s => `
+      <div class="modal-spec-row">
+        <span class="modal-spec-label">${s.label}</span>
+        <span class="modal-spec-value">${s.value}</span>
+      </div>
+    `).join("");
+
     modalAddBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, quisiera pedir ${p.name} (${fmt(p.price)} / kg). ¿Me confirman disponibilidad?`)}`;
     productModal.classList.add("open");
   }
